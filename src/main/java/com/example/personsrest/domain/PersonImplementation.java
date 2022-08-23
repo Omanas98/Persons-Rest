@@ -6,7 +6,7 @@ import java.util.List;
 
 @Data
 public class PersonImplementation implements Person{
-
+    // getting a specific persons info and their groups
     private String id;
     private String name;
     private int age;

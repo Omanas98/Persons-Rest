@@ -8,6 +8,7 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class PersonService {
+    // Fetching persons, by using the findAll() method in personRepository
     private PersonRepository personRepository;
 
     public List<Person> getAllPersons(){
