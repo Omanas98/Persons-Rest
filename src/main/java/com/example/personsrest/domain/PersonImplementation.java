@@ -2,11 +2,11 @@ package com.example.personsrest.domain;
 
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 public class PersonImplementation implements Person{
-    // getting a specific persons info and their groups
     private String id;
     private String name;
     private int age;
@@ -16,7 +16,7 @@ public class PersonImplementation implements Person{
 
     @Override
     public List<String> getGroups() {
-        return null;
+        return new ArrayList<>(groupList);
     }
 
     @Override

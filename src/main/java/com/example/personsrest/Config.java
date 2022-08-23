@@ -16,4 +16,5 @@ public class Config {
     public PersonRepository personRepository() {
         return null;
     }
+
 }

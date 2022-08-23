@@ -1,5 +1,6 @@
 package com.example.personsrest.domain;
 
+import com.example.personsrest.remote.GroupImplementation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,22 +21,39 @@ public class PersonController {
     }
 
     @GetMapping("/{id}")
-    public Optional<PersonDTO> getPerson(@PathVariable("id") String id){
+    public Optional<PersonDTO> getPerson(@PathVariable("id") String id) {
         return personService.getPerson(id).map(this::toDTO);
     }
 
     @PostMapping
     public PersonDTO createPerson(@RequestBody CreatePerson createPerson){
+        PersonImplementation person = new PersonImplementation();
         return toDTO(personService.createPerson(createPerson));
     }
 
-    private PersonDTO toDTO(Person person){
+    @PutMapping("/{id}")
+    public PersonDTO updatePerson(@PathVariable("id") String id, @RequestBody UpdatePerson updatePerson) {
+        return toDTO(personService.updatePerson(
+            id,
+            updatePerson.getName(),
+            updatePerson.getCity(),
+            updatePerson.getAge()
+        ));
+    }
+
+    @DeleteMapping("/{id}")
+    public void deletePerson(@PathVariable("id") String id) {
+        personService.deletePersonId(id);
+    }
+
+    private PersonDTO toDTO(Person person) {
         return new PersonDTO(
                 person.getId(),
                 person.getName(),
                 person.getCity(),
                 person.getAge(),
-                person.getGroups());
+                person.getGroups()
+        );
     }
 
 }
