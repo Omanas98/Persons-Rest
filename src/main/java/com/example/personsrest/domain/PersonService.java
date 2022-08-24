@@ -41,6 +41,7 @@ public class PersonService {
     public void deletePersonId(String id) {
         personRepository.delete(id);
     }
+
     public Person addGroupPerson(String id, String groupName) {
         Person person = personRepository.findById(id).get();
         String groupId = groupRemote.createGroup(groupName);
@@ -56,9 +57,7 @@ public class PersonService {
 
     public Page<Person> getAllNamesAndCities(String search, int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-
         return personRepository.findAllByNameContainingOrCityContaining(search, search, pageable);
     }
-
 
 }

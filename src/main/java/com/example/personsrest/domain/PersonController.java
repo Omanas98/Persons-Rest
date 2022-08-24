@@ -26,8 +26,7 @@ public class PersonController {
         }
         Page<Person> page = personService.getAllNamesAndCities(search, pageNumber, pageSize);
         List<Person> list = page.getContent();
-        return list.stream().map(this::toDTO)
-                .collect(Collectors.toList());
+        return list.stream().map(this::toDTO).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
@@ -44,10 +43,7 @@ public class PersonController {
     @PutMapping("/{id}")
     public PersonDTO updatePerson(@PathVariable("id") String id, @RequestBody UpdatePerson updatePerson) {
         return toDTO(personService.updatePerson(
-            id,
-            updatePerson.getName(),
-            updatePerson.getCity(),
-            updatePerson.getAge()
+            id, updatePerson.getName(), updatePerson.getCity(), updatePerson.getAge()
         ));
     }
 
