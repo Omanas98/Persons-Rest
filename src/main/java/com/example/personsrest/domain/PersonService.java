@@ -1,8 +1,10 @@
 package com.example.personsrest.domain;
 
-import com.example.personsrest.remote.GroupImplementation;
 import com.example.personsrest.remote.GroupRemote;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,5 +41,24 @@ public class PersonService {
     public void deletePersonId(String id) {
         personRepository.delete(id);
     }
+    public Person addGroupPerson(String id, String groupName) {
+        Person person = personRepository.findById(id).get();
+        String groupId = groupRemote.createGroup(groupName);
+        person.addGroup(groupId);
+        return personRepository.save(person);
+    }
+
+    public Person removeGroupFromPerson(String id, String groupName) {
+        Person person = personRepository.findById(id).get();;
+        person.removeGroup(groupName);
+        return personRepository.save(person);
+    }
+
+    public Page<Person> getAllNamesAndCities(String search, int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+
+        return personRepository.findAllByNameContainingOrCityContaining(search, search, pageable);
+    }
+
 
 }

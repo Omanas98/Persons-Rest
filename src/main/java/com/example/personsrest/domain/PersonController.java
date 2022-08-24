@@ -1,7 +1,8 @@
 package com.example.personsrest.domain;
 
-import com.example.personsrest.remote.GroupImplementation;
+import com.example.personsrest.remote.GroupRemote;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,10 +15,19 @@ import java.util.stream.Collectors;
 public class PersonController {
 
     private PersonService personService;
+    private GroupRemote groupRemote;
 
     @GetMapping
-    public List<PersonDTO> getAllPersons() {
-        return personService.getAllPersons().stream().map(this::toDTO).collect(Collectors.toList());
+    public List<PersonDTO> getAllPersons( @RequestParam(name = "search", required = false) String search,
+                                          @RequestParam(name = "pagenumber", required = false) Integer pageNumber,
+                                          @RequestParam(name = "pagesize", required = false) Integer pageSize) {
+        if(search == null || search.equals("")){
+            return personService.getAllPersons().stream().map(this::toDTO).collect(Collectors.toList());
+        }
+        Page<Person> page = personService.getAllNamesAndCities(search, pageNumber, pageSize);
+        List<Person> list = page.getContent();
+        return list.stream().map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
@@ -46,13 +56,25 @@ public class PersonController {
         personService.deletePersonId(id);
     }
 
+    @PutMapping("/{id}/addGroup/{groupName}")
+    public PersonDTO addGroupToPerson(@PathVariable("id") String id,
+                                      @PathVariable("groupName") String groupName) {
+        return toDTO(personService.addGroupPerson(id, groupName));
+    }
+
+    @DeleteMapping("/{id}/removeGroup/{groupId}")
+    public PersonDTO removeGroup(@PathVariable("id") String id,
+                                 @PathVariable("groupId") String groupId) {
+        return toDTO(personService.removeGroupFromPerson(id, groupId));
+    }
+
     private PersonDTO toDTO(Person person) {
         return new PersonDTO(
                 person.getId(),
                 person.getName(),
                 person.getCity(),
                 person.getAge(),
-                person.getGroups()
+                person.getGroups().stream().map(name -> groupRemote.getNameById(name)).collect(Collectors.toList())
         );
     }
 
