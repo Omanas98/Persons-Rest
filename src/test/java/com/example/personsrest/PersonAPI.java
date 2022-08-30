@@ -96,11 +96,10 @@ public class PersonAPI {
                 .blockLast();
     }
 
-    public PersonDTO removeGroup(String personId, String groupName) {
-        return webTestClient.delete().uri(BASE_URL + personId + "/removeGroup/" + groupName)
+    public PersonDTO removeGroup(String personId, String groupId) {
+        return webTestClient.delete().uri(BASE_URL + personId + "/removeGroup/" + groupId)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
-                .expectStatus().isOk()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON)
                 .returnResult(PersonDTO.class)
                 .getResponseBody()
@@ -140,7 +139,7 @@ public class PersonAPI {
             this.name = name;
             this.city = city;
             this.age = age;
-            this.groups = groups;
+            this.groups = /*(groups == null) ? List.of() : */ groups;
         }
 
     }

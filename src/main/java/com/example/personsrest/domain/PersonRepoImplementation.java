@@ -3,18 +3,29 @@ package com.example.personsrest.domain;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class PersonRepoImplementation implements PersonRepository {
+
+    ArrayList<Person> personArrayList = new ArrayList<>();
+
     @Override
     public Optional<Person> findById(String id) {
+        System.out.println(personArrayList);
+        for (Person p : personArrayList) {
+            if (p.getId().equals(id)){
+                Optional<Person> person = Optional.of(p);
+            }
+        }
         return Optional.empty();
     }
 
     @Override
     public List<Person> findAll() {
-        return null;
+        return personArrayList;
     }
 
     @Override
@@ -29,11 +40,12 @@ public class PersonRepoImplementation implements PersonRepository {
 
     @Override
     public Person save(Person person) {
+        personArrayList.add(person);
         return person;
     }
 
     @Override
     public void delete(String id) {
-
+        personArrayList.remove(id);
     }
 }

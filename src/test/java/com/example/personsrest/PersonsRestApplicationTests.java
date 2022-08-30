@@ -12,7 +12,6 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
@@ -21,7 +20,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
@@ -178,7 +176,7 @@ class PersonsRestApplicationTests {
         when(groupRemote.getNameById(eq(groupId))).thenReturn("Ankeborgare");
 
         // When
-        PersonAPI.PersonDTO personWithRemovedGroup = personApi.removeGroup(personId, "Ankeborgare");
+        PersonAPI.PersonDTO personWithRemovedGroup = personApi.removeGroup(personId, groupId);
 
         // Then
         assertTrue(groupId, personWithRemovedGroup.getGroups().isEmpty());

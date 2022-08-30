@@ -62,6 +62,16 @@ public class GroupApi {
                 .single();
     }
 
+    public Mono<Void> delete(String id) {
+        return webTestClient.delete().uri(BASE_URL + id)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .returnResult(Void.class)
+                .getResponseBody()
+                .then();
+    }
+
     @Value
     static class Group {
         String id;
@@ -74,16 +84,6 @@ public class GroupApi {
             this.id = id;
             this.name = name;
         }
-    }
-
-    public Mono<Void> delete(String id) {
-        return webTestClient.delete().uri(BASE_URL + id)
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus().isOk()
-                .returnResult(Void.class)
-                .getResponseBody()
-                .then();
     }
 
     @Value

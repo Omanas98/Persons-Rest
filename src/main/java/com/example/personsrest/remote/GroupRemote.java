@@ -7,5 +7,5 @@ public interface GroupRemote {
 
     String createGroup(String name);
 
-    String removeGroup(String groupId);
+    String removeGroup(String name);
 }

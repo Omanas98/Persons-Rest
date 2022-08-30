@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +27,12 @@ public class PersonService {
     }
 
     public Person createPerson(CreatePerson createPerson) {
-        PersonImplementation person = new PersonImplementation();
+        PersonImplementation person = new PersonImplementation(
+                createPerson.getName(),
+                createPerson.getCity(),
+                createPerson.getAge(),
+                new ArrayList<>()
+        );
         return personRepository.save(person);
     }
 
@@ -36,6 +42,13 @@ public class PersonService {
         person.setCity(city);
         person.setAge(age);
         return personRepository.save(person);
+    }
+
+    public String getGroupName(String groupId) {
+        String group;
+
+        group = groupRemote.getNameById(groupId);
+        return group;
     }
 
     public void deletePersonId(String id) {
@@ -49,10 +62,15 @@ public class PersonService {
         return personRepository.save(person);
     }
 
-    public Person removeGroupFromPerson(String id, String groupName) {
-        Person person = personRepository.findById(id).get();;
-        person.removeGroup(groupName);
+    public Person removeGroupFromPerson(String id, String groupId) {
+        Person person = personRepository.findById(id).get();
+        if(groupId.length() >= 30){
+            person.removeGroup(groupId);
+        } else {
+            person.getGroups().removeIf(g -> groupRemote.getNameById(g).equals(groupId));
+        }
         return personRepository.save(person);
+
     }
 
     public Page<Person> getAllNamesAndCities(String search, int pageNumber, int pageSize) {

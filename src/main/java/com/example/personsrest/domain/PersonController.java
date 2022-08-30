@@ -18,15 +18,17 @@ public class PersonController {
     private GroupRemote groupRemote;
 
     @GetMapping
-    public List<PersonDTO> getAllPersons( @RequestParam(name = "search", required = false) String search,
-                                          @RequestParam(name = "pagenumber", required = false) Integer pageNumber,
-                                          @RequestParam(name = "pagesize", required = false) Integer pageSize) {
+    public List<PersonDTO> getAllPersons(
+            @RequestParam(name = "search", required = false) String search,
+            @RequestParam(name = "pagenumber", required = false) Integer pageNumber,
+            @RequestParam(name = "pagesize", required = false) Integer pageSize) {
         if(search == null || search.equals("")){
             return personService.getAllPersons().stream().map(this::toDTO).collect(Collectors.toList());
         }
         Page<Person> page = personService.getAllNamesAndCities(search, pageNumber, pageSize);
         List<Person> list = page.getContent();
-        return list.stream().map(this::toDTO).collect(Collectors.toList());
+        return list.stream().map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
@@ -35,15 +37,17 @@ public class PersonController {
     }
 
     @PostMapping
-    public PersonDTO createPerson(@RequestBody CreatePerson createPerson){
-        PersonImplementation person = new PersonImplementation();
+    public PersonDTO createPerson(@RequestBody CreatePerson createPerson) {
         return toDTO(personService.createPerson(createPerson));
     }
 
     @PutMapping("/{id}")
     public PersonDTO updatePerson(@PathVariable("id") String id, @RequestBody UpdatePerson updatePerson) {
         return toDTO(personService.updatePerson(
-            id, updatePerson.getName(), updatePerson.getCity(), updatePerson.getAge()
+                id,
+                updatePerson.getName(),
+                updatePerson.getCity(),
+                updatePerson.getAge()
         ));
     }
 
@@ -61,7 +65,11 @@ public class PersonController {
     @DeleteMapping("/{id}/removeGroup/{groupId}")
     public PersonDTO removeGroup(@PathVariable("id") String id,
                                  @PathVariable("groupId") String groupId) {
-        return toDTO(personService.removeGroupFromPerson(id, groupId));
+        return toDTO(personService.removeGroupFromPerson(
+                id,
+                groupId
+        ));
+
     }
 
     private PersonDTO toDTO(Person person) {
@@ -70,8 +78,8 @@ public class PersonController {
                 person.getName(),
                 person.getCity(),
                 person.getAge(),
-                person.getGroups().stream().map(name -> groupRemote.getNameById(name)).collect(Collectors.toList())
-        );
+                person.getGroups().stream().map(name -> groupRemote.getNameById(name)).collect(Collectors.toList()));
     }
+
 
 }
