@@ -1,5 +1,6 @@
 package com.example.personsrest.domain;
 
+import com.example.personsrest.remote.GroupRemote;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -15,15 +16,14 @@ public class PersonImplementation implements Person {
     private boolean active;
     private List<String> groupList;
 
+    private GroupRemote groupRemote;
+
     public PersonImplementation(String name, String city, int age, ArrayList<String> groupList) {
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.city = city;
         this.age = age;
         this.groupList = groupList;
-    }
-
-    public PersonImplementation() {
     }
 
     @Override
@@ -38,7 +38,6 @@ public class PersonImplementation implements Person {
 
     @Override
     public void removeGroup(String groupId) {
-        this.groupList.remove(groupId);
+        this.groupList.removeIf(g -> g.equals(groupId));
     }
-
 }

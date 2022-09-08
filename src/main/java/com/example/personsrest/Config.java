@@ -1,6 +1,5 @@
 package com.example.personsrest;
 
-import com.example.personsrest.domain.Person;
 import com.example.personsrest.domain.PersonRepoImplementation;
 import com.example.personsrest.domain.PersonRepository;
 import com.example.personsrest.remote.GroupRemote;

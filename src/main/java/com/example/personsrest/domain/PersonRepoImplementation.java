@@ -3,7 +3,6 @@ package com.example.personsrest.domain;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -14,10 +13,10 @@ public class PersonRepoImplementation implements PersonRepository {
 
     @Override
     public Optional<Person> findById(String id) {
-        System.out.println(personArrayList);
         for (Person p : personArrayList) {
             if (p.getId().equals(id)){
                 Optional<Person> person = Optional.of(p);
+                return person;
             }
         }
         return Optional.empty();
@@ -31,11 +30,6 @@ public class PersonRepoImplementation implements PersonRepository {
     @Override
     public Page<Person> findAllByNameContainingOrCityContaining(String name, String city, Pageable pageable) {
         return null;
-    }
-
-    @Override
-    public void deleteAll() {
-
     }
 
     @Override

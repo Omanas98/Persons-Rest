@@ -44,13 +44,6 @@ public class PersonService {
         return personRepository.save(person);
     }
 
-    public String getGroupName(String groupId) {
-        String group;
-
-        group = groupRemote.getNameById(groupId);
-        return group;
-    }
-
     public void deletePersonId(String id) {
         personRepository.delete(id);
     }
@@ -70,7 +63,6 @@ public class PersonService {
             person.getGroups().removeIf(g -> groupRemote.getNameById(g).equals(groupId));
         }
         return personRepository.save(person);
-
     }
 
     public Page<Person> getAllNamesAndCities(String search, int pageNumber, int pageSize) {

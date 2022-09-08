@@ -22,7 +22,6 @@ public class PersonAPI {
         return webTestClient.get().uri(BASE_URL)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
-                .expectStatus().isOk()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON)
                 .returnResult(PersonDTO.class)
                 .getResponseBody();
@@ -100,6 +99,7 @@ public class PersonAPI {
         return webTestClient.delete().uri(BASE_URL + personId + "/removeGroup/" + groupId)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
+                .expectStatus().isOk()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON)
                 .returnResult(PersonDTO.class)
                 .getResponseBody()
@@ -139,10 +139,8 @@ public class PersonAPI {
             this.name = name;
             this.city = city;
             this.age = age;
-            this.groups = /*(groups == null) ? List.of() : */ groups;
+            this.groups = groups;
         }
-
     }
-
 
 }

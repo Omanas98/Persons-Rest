@@ -80,6 +80,4 @@ public class PersonController {
                 person.getAge(),
                 person.getGroups().stream().map(name -> groupRemote.getNameById(name)).collect(Collectors.toList()));
     }
-
-
 }
